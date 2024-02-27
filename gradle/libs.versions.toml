@@ -3,6 +3,7 @@ agp = "8.2.2"
 kotlin = "1.9.21"
 kotlinter = "4.1.0"
 kotlinx-atomicfu = "0.23.2"
+kotlinx-binary-compatibility-validator = "0.14.0"
 
 [libraries]
 kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", version.ref = "kotlinx-atomicfu" }
@@ -11,3 +12,4 @@ kotlinx-atomicfu = { module = "org.jetbrains.kotlinx:atomicfu-gradle-plugin", ve
 android-library = { id = "com.android.library", version.ref = "agp" }
 kotlin-multiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
 kotlinter = { id = "org.jmailen.kotlinter", version.ref = "kotlinter" }
+kotlinx-binary-compatibility-validator = { id = "org.jetbrains.kotlinx.binary-compatibility-validator", version.ref = "kotlinx-binary-compatibility-validator" }

@@ -1,0 +1,61 @@
+public abstract interface class moe/ganen/bindable/Bindable {
+	public static final field Companion Lmoe/ganen/bindable/Bindable$Companion;
+	public abstract fun beginLease (Z)Lmoe/ganen/bindable/LeasedBindable;
+	public abstract fun bindDisabledChanged (ZLmoe/ganen/bindable/EventObserver;)V
+	public abstract fun bindTo (Lmoe/ganen/bindable/Bindable;)V
+	public abstract fun bindValueChanged (ZLmoe/ganen/bindable/EventObserver;)V
+	public abstract fun createInstance ()Lmoe/ganen/bindable/Bindable;
+	public abstract fun getBoundCopy ()Lmoe/ganen/bindable/Bindable;
+	public abstract fun getDisabled ()Z
+	public abstract fun getDisabledChanged ()Lmoe/ganen/bindable/Event;
+	public abstract fun getValue ()Ljava/lang/Object;
+	public abstract fun getValueChanged ()Lmoe/ganen/bindable/Event;
+	public abstract fun setDisabled (Z)V
+	public abstract fun setValue (Ljava/lang/Object;)V
+	public abstract fun unbindAll ()V
+	public abstract fun unbindFrom (Lmoe/ganen/bindable/Bindable;)V
+}
+
+public final class moe/ganen/bindable/Bindable$Companion {
+	public final fun getBoundCopyImplementation (Lmoe/ganen/bindable/Bindable;)Lmoe/ganen/bindable/Bindable;
+}
+
+public final class moe/ganen/bindable/Bindable$DefaultImpls {
+	public static synthetic fun bindDisabledChanged$default (Lmoe/ganen/bindable/Bindable;ZLmoe/ganen/bindable/EventObserver;ILjava/lang/Object;)V
+	public static synthetic fun bindValueChanged$default (Lmoe/ganen/bindable/Bindable;ZLmoe/ganen/bindable/EventObserver;ILjava/lang/Object;)V
+}
+
+public final class moe/ganen/bindable/BindableExtKt {
+	public static final fun Bindable (Ljava/lang/Object;)Lmoe/ganen/bindable/Bindable;
+	public static final fun Bindable (Ljava/lang/Object;Z)Lmoe/ganen/bindable/Bindable;
+	public static final fun bindTo (Lmoe/ganen/bindable/Bindable;[Lmoe/ganen/bindable/Bindable;)V
+}
+
+public final class moe/ganen/bindable/Event {
+	public fun <init> ()V
+	public final fun invoke (Ljava/lang/Object;)V
+	public final fun minusAssign (Lmoe/ganen/bindable/EventObserver;)V
+	public final fun plusAssign (Lmoe/ganen/bindable/EventObserver;)V
+}
+
+public abstract interface class moe/ganen/bindable/EventObserver {
+	public abstract fun observe (Ljava/lang/Object;)V
+}
+
+public abstract interface class moe/ganen/bindable/LeasedBindable : moe/ganen/bindable/Bindable {
+	public abstract fun returnLease ()Z
+}
+
+public final class moe/ganen/bindable/ValueChangedEvent {
+	public fun <init> (Ljava/lang/Object;Ljava/lang/Object;)V
+	public final fun component1 ()Ljava/lang/Object;
+	public final fun component2 ()Ljava/lang/Object;
+	public final fun copy (Ljava/lang/Object;Ljava/lang/Object;)Lmoe/ganen/bindable/ValueChangedEvent;
+	public static synthetic fun copy$default (Lmoe/ganen/bindable/ValueChangedEvent;Ljava/lang/Object;Ljava/lang/Object;ILjava/lang/Object;)Lmoe/ganen/bindable/ValueChangedEvent;
+	public fun equals (Ljava/lang/Object;)Z
+	public final fun getNewValue ()Ljava/lang/Object;
+	public final fun getOldValue ()Ljava/lang/Object;
+	public fun hashCode ()I
+	public fun toString ()Ljava/lang/String;
+}
+

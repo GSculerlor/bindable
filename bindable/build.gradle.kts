@@ -2,6 +2,7 @@ plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinter)
+    alias(libs.plugins.kotlinx.binary.compatibility.validator)
     id("kotlinx-atomicfu")
     id("maven-publish")
 }
@@ -82,6 +83,10 @@ android {
     defaultConfig {
         minSdk = 21
     }
+}
+
+apiValidation {
+    ignoredClasses.add("moe.ganen.bindable.WeakReference")
 }
 
 tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().configureEach {
