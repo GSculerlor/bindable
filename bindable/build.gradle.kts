@@ -53,10 +53,7 @@ kotlin {
     sourceSets {
         val commonMain by getting
         val jvmMain by getting
-        val androidMain by getting {
-            // TODO: (ganen) might need to revisit this statement.
-            dependsOn(jvmMain)
-        }
+        val androidMain by getting
         val iosX64Main by getting
         val iosArm64Main by getting
         val iosSimulatorArm64Main by getting
