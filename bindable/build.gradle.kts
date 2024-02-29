@@ -3,6 +3,7 @@ plugins {
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinter)
     alias(libs.plugins.kotlinx.binary.compatibility.validator)
+    alias(libs.plugins.dokka)
     id("kotlinx-atomicfu")
     id("maven-publish")
 }
