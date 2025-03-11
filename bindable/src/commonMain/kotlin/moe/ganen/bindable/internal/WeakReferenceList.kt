@@ -2,7 +2,7 @@ package moe.ganen.bindable.internal
 
 import kotlinx.atomicfu.locks.SynchronizedObject
 import kotlinx.atomicfu.locks.synchronized
-import moe.ganen.bindable.WeakReference
+import moe.ganen.bindable.internal.WeakReference
 
 /**
  * A mutable list that holds list of weak references of [T].

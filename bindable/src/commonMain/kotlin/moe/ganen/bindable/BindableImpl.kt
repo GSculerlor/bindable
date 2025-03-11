@@ -2,6 +2,7 @@ package moe.ganen.bindable
 
 import moe.ganen.bindable.internal.LeasedBindableImpl
 import moe.ganen.bindable.internal.Unset
+import moe.ganen.bindable.internal.WeakReference
 import moe.ganen.bindable.internal.WeakReferenceList
 import moe.ganen.bindable.internal.mutableWeakListOf
 
