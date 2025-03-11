@@ -4,6 +4,7 @@ import kotlin.test.Test
 import kotlin.test.assertEquals
 import kotlin.test.assertFailsWith
 import kotlin.test.assertFalse
+import kotlin.test.assertNull
 import kotlin.test.assertTrue
 
 class BindableTest {
@@ -11,6 +12,25 @@ class BindableTest {
     fun `test constructor value uses as default value and initial value`() {
         val value = "Cellinia Texas"
         val bindable = Bindable(value)
+        assertEquals(value, bindable.value)
+    }
+
+    @Test
+    fun `test null value`() {
+        val value = "Cellinia Texas"
+        val bindable = Bindable<String?>(value)
+        assertEquals(value, bindable.value)
+        bindable.value = null
+        assertNull(bindable.value)
+    }
+
+    @Test
+    fun `test null default value`() {
+        val bindable = Bindable<String?>(null)
+        assertNull(bindable.value)
+
+        val value = "Cellinia Texas"
+        bindable.value = value
         assertEquals(value, bindable.value)
     }
 
