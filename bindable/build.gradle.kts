@@ -1,15 +1,15 @@
+import com.vanniktech.maven.publish.JavadocJar
+import com.vanniktech.maven.publish.KotlinMultiplatform
+
 plugins {
     alias(libs.plugins.kotlin.multiplatform)
     alias(libs.plugins.android.library)
     alias(libs.plugins.kotlinter)
-    alias(libs.plugins.kotlinx.binary.compatibility.validator)
+    alias(libs.plugins.kotlinx.binaryCompatibilityValidator)
     alias(libs.plugins.dokka)
-    id("kotlinx-atomicfu")
-    id("maven-publish")
+    alias(libs.plugins.maven.publish)
+    alias(libs.plugins.kotlinx.atomicfu)
 }
-
-version = rootProject.version
-group = rootProject.group
 
 kotlin {
     jvmToolchain(17)
@@ -52,23 +52,9 @@ kotlin {
 
 
     sourceSets {
-        val commonMain by getting
-        val jvmMain by getting
-        val androidMain by getting
-        val iosX64Main by getting
-        val iosArm64Main by getting
-        val iosSimulatorArm64Main by getting
-        val iosMain by getting {
-            dependsOn(commonMain)
-            iosX64Main.dependsOn(this)
-            iosArm64Main.dependsOn(this)
-            iosSimulatorArm64Main.dependsOn(this)
-        }
-
-        val jvmTest by getting
-        val commonTest by getting {
+        commonTest {
             dependencies {
-                implementation(kotlin("test-junit"))
+                implementation(kotlin("test"))
             }
         }
     }
@@ -76,7 +62,7 @@ kotlin {
 
 android {
     namespace = "moe.ganen.bindable"
-    compileSdk = 33
+    compileSdk = 34
     sourceSets["main"].manifest.srcFile("src/androidMain/AndroidManifest.xml")
     defaultConfig {
         minSdk = 21
@@ -94,7 +80,10 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompilationTask<*>>().con
     )
 }
 
-fun MavenPublication.mavenCentralPom() {
+mavenPublishing {
+    configure(KotlinMultiplatform(javadocJar = JavadocJar.Dokka("dokkaHtml")))
+    coordinates("moe.ganen.bindable", "bindable", "1.0.0-SNAPSHOT")
+
     pom {
         name.set("bindable")
         description.set("Kotlin implementation of osu!framework's Bindable concept.")
@@ -121,37 +110,11 @@ fun MavenPublication.mavenCentralPom() {
 }
 
 publishing {
-    if (plugins.hasPlugin("org.jetbrains.kotlin.multiplatform")) {
-        // already has publications, just need to add javadoc task
-        val javadocJar by tasks.creating(Jar::class) {
-            from("javadoc")
-            archiveClassifier.set("javadoc")
-        }
-        publications.all {
-            if (this is MavenPublication) {
-                artifact(javadocJar)
-                mavenCentralPom()
-            }
-        }
-        // create task to publish all apple (macos, ios, tvos, watchos) artifacts
-        val publishApple by tasks.registering {
-            publications.all {
-                if (name.contains(Regex("macos|ios|tvos|watchos"))) {
-                    val publicationNameForTask = name.replaceFirstChar(Char::uppercase)
-                    dependsOn("publish${publicationNameForTask}PublicationToSonatypeRepository")
-                }
-            }
-        }
-    } else {
-        // Need to create source, javadoc & publication
-        val java = extensions.getByType<JavaPluginExtension>()
-        java.withSourcesJar()
-        java.withJavadocJar()
-        publications {
-            create<MavenPublication>("lib") {
-                from(components["java"])
-                mavenCentralPom()
-            }
+    repositories {
+        maven {
+            name = "githubPackage"
+            url = uri("https://maven.pkg.github.com/GSculerlor/bindable")
+            credentials(PasswordCredentials::class)
         }
     }
 }

@@ -1,23 +1,19 @@
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
 plugins {
-    //trick: for the same plugin versions in all submodules
-    alias(libs.plugins.android.library).apply(false)
-    alias(libs.plugins.kotlin.multiplatform).apply(false)
-    alias(libs.plugins.kotlinter).apply(false)
-    alias(libs.plugins.kotlinx.binary.compatibility.validator).apply(false)
-    alias(libs.plugins.dokka).apply(false)
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.kotlin.multiplatform) apply false
+    alias(libs.plugins.kotlinter) apply false
+    alias(libs.plugins.kotlinx.binaryCompatibilityValidator) apply false
+    alias(libs.plugins.maven.publish) apply false
+    alias(libs.plugins.dokka) apply false
+    alias(libs.plugins.kotlinx.atomicfu) apply false
 }
-
-buildscript {
-    dependencies {
-        classpath(libs.kotlinx.atomicfu)
-    }
-}
-
-group = "moe.ganen.bindable"
-version = "0.0.1"
 
 allprojects {
     tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-        kotlinOptions.jvmTarget = JavaVersion.VERSION_17.toString()
+        compilerOptions {
+            jvmTarget.set(JvmTarget.JVM_17)
+        }
     }
 }
