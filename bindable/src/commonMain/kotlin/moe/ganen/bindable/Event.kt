@@ -15,8 +15,9 @@ public class Event<T> {
     }
 
     public operator fun invoke(value: T) {
-        for (observer in observers)
+        for (observer in observers) {
             observer.observe(value)
+        }
     }
 
     internal fun clear() {

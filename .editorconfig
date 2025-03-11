@@ -2,3 +2,4 @@ root = true
 
 [*.{kt,kts}]
 ktlint_standard_function-naming = disabled
+ktlint_standard_class-signature = disabled
