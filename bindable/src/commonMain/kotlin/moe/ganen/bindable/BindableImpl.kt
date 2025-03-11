@@ -8,26 +8,14 @@ import moe.ganen.bindable.internal.mutableWeakListOf
 /**
  * Generic implementation of [Bindable].
  */
-internal open class BindableImpl<T>() : Bindable<T> {
+internal open class BindableImpl<T>(private val initialValue: T, disabledByDefault: Boolean = false) : Bindable<T> {
     private val weakReference: WeakReference<Bindable<T>> by lazy { WeakReference(this) }
     private val bindings: WeakReferenceList<Bindable<T>> = mutableWeakListOf()
 
     /**
-     * Create new [BindableImpl] with initial value. This bindable will not be disabled by default.
-     * @param value initial value of the bindable.
+     * Used by [LeasedBindable].
      */
-    constructor(value: T) : this() {
-        this.value = value
-    }
-
-    /**
-     * Create new [BindableImpl] with initial value and disabled state.
-     * @param value initial value of the bindable.
-     * @param disabledByDefault whether this bindable is disabled by default.
-     */
-    constructor(value: T, disabledByDefault: Boolean) : this(value) {
-        disabled = disabledByDefault
-    }
+    internal constructor() : this(initialValue = Unset.unbox(null), disabledByDefault = false)
 
     override fun bindTo(them: Bindable<T>) {
         if (bindings.any { it.get()?.equals(them) == true }) {
@@ -43,12 +31,12 @@ internal open class BindableImpl<T>() : Bindable<T> {
 
     override fun getBoundCopy(): Bindable<T> = Bindable.getBoundCopyImplementation(this)
 
-    override fun createInstance(): Bindable<T> = BindableImpl()
+    override fun createInstance(): Bindable<T> = BindableImpl(initialValue = initialValue)
 
     // region value
     override val valueChanged: Event<ValueChangedEvent<T>> = Event()
 
-    private var _value: Any? = Unset
+    private var _value = initialValue
 
     override var value: T
         get() = Unset.unbox(_value)
@@ -57,8 +45,7 @@ internal open class BindableImpl<T>() : Bindable<T> {
 
             if (value == Unset.unbox(_value)) return
 
-            @Suppress("UNCHECKED_CAST")
-            setValue(_value as T, value)
+            setValue(_value, value)
         }
 
     override fun bindValueChanged(
@@ -82,14 +69,13 @@ internal open class BindableImpl<T>() : Bindable<T> {
         triggerValueChange(previousValue, source ?: this, bypassCheck = bypassCheck)
     }
 
-    @Suppress("UNCHECKED_CAST")
     private fun triggerValueChange(
         previousValue: T,
         source: Bindable<T>,
         propagateToBindings: Boolean = true,
         bypassCheck: Boolean = false,
     ) {
-        val beforePropagation = _value as T
+        val beforePropagation = _value
         if (propagateToBindings && bindings.isNotEmpty()) {
             bindings.forAliveRefs {
                 if (it == source) return@forAliveRefs
@@ -106,7 +92,7 @@ internal open class BindableImpl<T>() : Bindable<T> {
     // region disabled
     override val disabledChanged: Event<Boolean> = Event()
 
-    private var _disabled: Boolean = false
+    private var _disabled: Boolean = disabledByDefault
 
     override var disabled: Boolean
         get() = _disabled

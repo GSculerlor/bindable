@@ -4,7 +4,7 @@ import moe.ganen.bindable.Bindable
 import moe.ganen.bindable.BindableImpl
 import moe.ganen.bindable.LeasedBindable
 
-internal class LeasedBindableImpl<T> private constructor() : LeasedBindable<T>, BindableImpl<T>() {
+internal class LeasedBindableImpl<T> private constructor() : BindableImpl<T>(), LeasedBindable<T> {
     private lateinit var source: Bindable<T>
 
     private var revertValueOnReturn: Boolean = false
