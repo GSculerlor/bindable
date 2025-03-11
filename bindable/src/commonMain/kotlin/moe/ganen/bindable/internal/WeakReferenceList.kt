@@ -28,6 +28,9 @@ internal class WeakReferenceList<T : Any>(private val delegate: MutableList<Weak
             return delegate.remove(element)
         }
 
+    override val size: Int
+        get() = synchronized(lock) { delegate.size }
+
     internal fun forAliveRefs(
         cleanUpDestroyedRef: Boolean = true,
         action: (T) -> Unit,
